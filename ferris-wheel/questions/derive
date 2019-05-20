@@ -1,0 +1,3 @@
+Added #[derive(Debug)] because println! was using it.
+Added Copy since 'let z = x' is a move, unless type is Copy.
+Added Clone since Duration needed it for Copy.

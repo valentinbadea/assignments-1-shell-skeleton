@@ -1,0 +1,2 @@
+Changed make_1 to receive a '&mut self' instead of a plain '&self' since it changed .0.
+Changed x to be mutable 

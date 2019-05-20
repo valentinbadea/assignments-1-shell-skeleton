@@ -1,0 +1,3 @@
+Tried first adding type '&mut i32' and removing '= 10';
+(Re)Added '= &mut 10' since compiler was waiting for &mut i32.
+Removed type declaration since type inference should work.
