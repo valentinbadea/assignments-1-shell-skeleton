@@ -1,0 +1,2 @@
+GPIO27 will use: GPFSEL2 - bits 21-23, GPSET0 bit 27 and GPCLR0 bit 27.
+GPIO 27 maps to pin 13 of the RPI.
