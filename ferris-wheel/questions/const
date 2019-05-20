@@ -1,0 +1,2 @@
+add(a,b) adds constants, which if allowed only in const fn functions, so added const to fn add.
+Added feature flag const_fn to allow using const fn.
