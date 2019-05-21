@@ -1,0 +1,5 @@
+io::Result<T> type alias was used without an import.
+T was not known since there was no declaratio of any trait bound on T.
+
+Added 'use std::io::Result' to bring it in scope.
+Added '<T: io::Read>' trait bound for T in the io::Read impl block for ReadWrapper<T> so the compiler would be able to have a defined T.
