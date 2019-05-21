@@ -1,0 +1,3 @@
+';' at the end of add() meant that the function's return type was the unit type.
+
+Removed ';' so the result of 'a + b' is returned instead of th eunit type.

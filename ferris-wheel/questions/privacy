@@ -1,0 +1,3 @@
+a::f() was called but private in mod a.
+
+Declared as 'pub' the a::f() function.

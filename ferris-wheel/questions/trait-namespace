@@ -1,0 +1,3 @@
+Trait MyTrait wasn't in scope for x from main() so x.foo() was failing.
+
+Added a 'use a::MyTrait' in main, to bring its interfaces in scope.
