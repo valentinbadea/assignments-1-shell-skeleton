@@ -1,0 +1,6 @@
+For Error and ErrorA/ErrorB there was no conversion path so do_both was failing to compile since the types from the do_a/do_b were returning Err(Error*), while do_both was supposed to return on the error cases Err(Error::A(ErrorA)) or Err(Error::B(ErrorB)).
+
+Following the info at https://blog.burntsushi.net/rust-error-handling/, the first solution was to use some interim a and b variables which would be map_err()-ed to Error::A(ErrorA) and Error::B(ErrorB), accodingly.
+
+Going even further in the same post, implemented 'From<ErrorA> for Error' and 'Error<B> from Error'. After this change, removed the #[derive(Debug]-s and reverted the introduction of a and b.
+This change, relative to the original code is just 12 lines and 2 character '?' in do_both(), exactly as required.

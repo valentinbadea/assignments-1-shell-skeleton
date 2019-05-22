@@ -1,10 +1,7 @@
 // FIXME: Make me compile. Diff budget: 12 line additions and 2 characters.
-#[derive(Debug)]
 struct ErrorA;
-#[derive(Debug)]
 struct ErrorB;
 
-#[derive(Debug)]
 enum Error {
     A(ErrorA),
     B(ErrorB)
@@ -31,9 +28,7 @@ impl From<ErrorB> for Error {
 }
 
 fn do_both() -> Result<(u16, u32), Error> {
-    let a = do_a()?;
-    let b = do_b()?;
-    Ok((a, b))
+    Ok((do_a()?, do_b()?))
 }
 
 fn main() { }
