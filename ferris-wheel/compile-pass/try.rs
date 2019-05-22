@@ -18,9 +18,21 @@ fn do_b() -> Result<u32, ErrorB> {
     Err(ErrorB)
 }
 
+impl From<ErrorA> for Error {
+    fn from(err: ErrorA) -> Error {
+        Error::A(err)
+    }
+}
+
+impl From<ErrorB> for Error {
+    fn from(err: ErrorB) -> Error {
+        Error::B(err)
+    }
+}
+
 fn do_both() -> Result<(u16, u32), Error> {
-    let a = do_a().map_err(Error::A)?;
-    let b = do_b().map_err(Error::B)?;
+    let a = do_a()?;
+    let b = do_b()?;
     Ok((a, b))
 }
 
