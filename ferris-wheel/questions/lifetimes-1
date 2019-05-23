@@ -1,0 +1,3 @@
+Lifetime of returned &str of StrWrapper.inner() had only the default lifetime, i.e. until the end of scope of inner, which meant that _ would receive a resource which would not live past the end of inner().
+
+Using the same lifetime for the returned &str from inner as for the StrWrapper itself meant it would effectively have a 'static lifetime, which would live past the return from inner().
