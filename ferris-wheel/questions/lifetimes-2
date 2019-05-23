@@ -1,0 +1,11 @@
+struct RefWrapper:
+ - Inner type '&'a T' should have a lifetime as long as it container, but RefWrapper<T> didn't declare a struct lifetime.
+ - Added generic subtype restriction (<'a, ..>) and lifetime subtype T relative to lifetime 'a: <'a, T:'a>.
+
+ impl block:
+ - didn't actually refer to type RefWrapper<'a, T>
+ - aslo didn't decalre any lifetime, although it was expected inner() would return a lifetiem at least as long as the container
+ - Added:
+   - declaration of lifime <'a> for impl block
+   - lifetime subtyping for inner type "T: 'a"
+   - liftime 'a to the returned type from inner call ("&'a T" instead of &T)
