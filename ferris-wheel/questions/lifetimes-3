@@ -1,0 +1,8 @@
+struct RefWrapper<T>:
+ - contained a lifimed reference to T, the 'a lifetime wasn't declared.
+ - added declaration of lifetime 'a and subtyped lifetime of T to "T: 'a" do the inner doen't outlive the RefWrapper
+
+struct RefWrapperWrapper<T>:
+ - declared lifetime for RefWrapper type T
+ - replaced lifetime 'b with 'a
+ - subtyped lifetime T and used "'a T" in inner RefWrapper
