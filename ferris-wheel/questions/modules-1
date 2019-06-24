@@ -1,3 +1,4 @@
 To access any member of a module, functions or variables, the member must be pub, otherwise is not visible outside the mod.
 
 By removing 'pub' from a's f(), f() is no longer accessible from outside the mod, hence not accesible from main().
+q
