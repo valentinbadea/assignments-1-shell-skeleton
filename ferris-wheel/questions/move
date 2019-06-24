@@ -1,0 +1,5 @@
+By default, a struct has move semantics.
+If the struct has move semantics, then the code would be incorrect because x is moved to y, but then is moved again from x to z.
+If the struct is just Copy, then the compiler complains it doesn't have Clone, because the impl Copy requires Clone to be implemented.
+
+In the example both traits were derived, removing either one or both makes the code not compile.
