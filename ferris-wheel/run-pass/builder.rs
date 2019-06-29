@@ -5,6 +5,38 @@ struct Builder {
     number: Option<usize>,
 }
 
+impl Builder {
+    fn default() -> Builder {
+        Builder {
+            string: None,
+            number: None,
+        }
+    }
+
+    fn to_string(&self) -> String {
+        let mut v_str: Vec<String> = Vec::new();
+        match self.string {
+            Some(ref x) => v_str.push(x.clone()),
+            None => (),
+        };
+        match self.number {
+            Some(ref x) => v_str.push(x.to_string()),
+            None => (),
+        }
+        v_str.join(" ")
+    }
+
+    fn string<S: Into<String>>(mut self, s: S) -> Self {
+        self.string = Some(s.into());
+        self
+    }
+
+    fn number(mut self, number: usize) -> Self {
+        self.number = Some(number);
+        self
+    }
+}
+
 // Do not modify this function.
 fn main() {
     let empty = Builder::default().to_string();

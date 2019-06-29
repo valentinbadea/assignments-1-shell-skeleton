@@ -1,0 +1,12 @@
+The builder pattern needs to consume mut self and return self so it works effectively.
+
+Even if the struct itself has .string and number .fileds, the builder pattern needs to initalize them via methods with the same names, so we need to implement them accordingly.
+
+Based on the test cases in the main() function:
+ - the output of the to_string() method is the string representation of the .string and .number struct members, if they are present (Some(x)). Otherwise, the coresponding string part is ommitted from the .to_string() output.
+ - .default() should create a Builder that has the empty string as .to_string() output, hence default fields should be None.
+ - calling a second time the .string() or .number() methods will overwrite the corresponding field.
+
+A Vec<String>.join(" ") method generates the correct output, as long as the string representaion of the Some(x) fields are pushed to the vector in the proper order; None values should be skipped.
+
+With these pieces in place, the
