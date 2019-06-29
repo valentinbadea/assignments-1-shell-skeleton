@@ -15,13 +15,11 @@ impl Builder {
 
     fn to_string(&self) -> String {
         let mut v_str: Vec<String> = Vec::new();
-        match self.string {
-            Some(ref x) => v_str.push(x.clone()),
-            None => (),
+        if let Some(ref x) = self.string {
+            v_str.push(x.clone());
         };
-        match self.number {
-            Some(ref x) => v_str.push(x.to_string()),
-            None => (),
+        if let Some(ref x) = self.number {
+            v_str.push(x.to_string());
         }
         v_str.join(" ")
     }
