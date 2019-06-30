@@ -1,0 +1,6 @@
+max(a, b) needs to be using generics since it's called with u8, usize and IntWrapper() types.
+T type of the parameters need to be PartialOrd to be able to compare them to return the max.
+T also needs to be PartialEq since assert_eq! relies on it.
+
+The 'use' restriction applies only to when max is called with IntWrapper types, since u8 and usize are Copy.
+Easiest fix is to clone IntWrapper when calling max().
