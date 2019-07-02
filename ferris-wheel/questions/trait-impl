@@ -1,0 +1,18 @@
+enum Duration has 3 variants which all try to represent duration with differing resolutions.
+
+The assert_eq! mcaro expects its perameters to have PartialEq implemented for them in order to work.
+
+Using the #[derive(PartialEq)] will not work since the default implementation would
+consider the enum variants equal with themselves, but not with each other, so we need
+a custom PartialEq impl which can compare any pair of Duration variants.
+
+Since all durations can be converted to the higher resolution unit of measurement, milliseconds,
+what we need is an `impl PartialEq<Duration> for Duration`.
+
+The PartialEq trait requires an eq function with the signature:
+`fn eq(&self, other: &T) -> bool`, while Self = Duration and T = Duration, also.
+
+Since all variants wrap some fundamental copy type, what we need is to get the actual wrapped value
+and convert the value into milliseconds for both sides of the comparison. We do the unwrapping via
+a match statement for both self and other, then conver to milliseconds and compare the resulting
+values.
