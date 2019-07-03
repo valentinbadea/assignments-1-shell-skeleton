@@ -1,0 +1,8 @@
+The last line of the main() function uses a mutable borrow, while y is also an
+active borrow.
+
+Since mutable references must be the only active aliases to the referenced
+resource, we need to make sure any other aliases are dead.
+
+The easiest way to do this is to limit the scope of y, which holds the other
+reference to x.
