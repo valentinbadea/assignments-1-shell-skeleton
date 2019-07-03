@@ -17,8 +17,8 @@ impl FooToo for Dummy { }
 fn main() {
     let dummy = Dummy;
 
-    let x = dummy.foo();
-    let y = dummy.foo();
+    let x = (&dummy as &Foo).foo();
+    let y = (&dummy as &FooToo).foo();
 
     // Values for `x` and `y` must come from calling `foo()` methods.
     assert_eq!(x, 1);

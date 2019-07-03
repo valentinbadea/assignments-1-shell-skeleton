@@ -1,0 +1,11 @@
+Dummy implements Foo and FooToo traits. Both traits have the same function
+implemented - fn(&self) -> usize - so we need an unambiguous way to ask for
+either of the implementations of foo.
+
+The universal function call syntax is the way to implement this, still, the
+turbofish syntax (dummy.foo::<Foo>() ) doesn't seem to work, most likely due to
+the fact the self parameter is a ref: &self.
+
+Instead we use the cast (as) and instead of 'dummy' we write '(&dummy as &..)'
+to allow the cast to the appropriate trait type, so the correct .foo() is
+chosen.
