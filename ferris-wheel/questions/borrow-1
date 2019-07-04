@@ -6,3 +6,16 @@ resource, which is not permitted by the aliasing rules.
 
 Since the Copy types are a subset of Clone types, the default (derive)
 implmentation of Copy relies on Clone, so we need to derive both Copy and Clone.
+
+Note:
+An alternative which is definitely a cheat is to change the original struct
+definition into a function like:
+
+fn MyType(x: usize) -> usize { x }
+
+This is clearly a cheat because default function formatting would require 3
+lines, and the semantics of MyType(1) is definitely changed from 'type' to
+function call.
+
+The current solution also feels wrong since I would have expected that a borrow
+would be the key to the solution, not the Copy+Clone derive.
