@@ -1,0 +1,8 @@
+MyType wraps the Copy type usize, but structs, by default are Clone types.
+
+So if we declare the struct itself as a Copy type, it should be allowed to have
+y and z originating from x, since they would no longer be aliases to the same
+resource, which is not permitted by the aliasing rules.
+
+Since the Copy types are a subset of Clone types, the default (derive)
+implmentation of Copy relies on Clone, so we need to derive both Copy and Clone.
