@@ -1,0 +1,5 @@
+Since StackVec relies on the user provided non-growable storage, it is possible
+that at some point the push can fail if the underlying storage is full.
+
+This is the case where the push can fail, so this is when the Err() part of the
+Result will have to be used, instead of the Ok() altetrnative.

@@ -1,0 +1,7 @@
+The underlying storage of T, buffer is a reference to an arrary of mut T, so
+this means that any reference to a given T in the buffer should point to a T
+that lives at least as long as the reference itself, if not more.
+
+As a consequence, we need to make sure T is T: 'a, which ensures that any
+reference to a T can't outlive the lifetime of T itself, otherwise, the
+reference could be a case of use-after-free or dangling-reference.
