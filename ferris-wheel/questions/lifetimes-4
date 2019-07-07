@@ -1,0 +1,23 @@
+All used lifetimes must be declared, so first we need to add these declarations:
+
+    struct RefWrapper<'a, T>(&'a T);
+    struct RefWrapperWrapper<'a, 'b, T>(&'b RefWrapper<'a, T>);
+    impl<'a, 'b, T> RefWrapperWrapper<'a, 'b, T>
+
+Any reference to a type U has to live, at most, as the U type itself.
+
+So any reference "&'a T" must enforce that T is at least T: 'a:
+
+    struct RefWrapper<'a, T: 'a>(&'a T);
+    struct RefWrapperWrapper<'a, 'b, T: 'a>(&'b RefWrapper<'a, T>);
+    impl<'a, 'b, T:'a> RefWrapperWrapper<'a, 'b, T>
+
+As per the reference discussions above, the lifetime 'b which is the lifetime
+of the reference to RefWrapper<&'a T> must live, at most, as long as lifetime
+'a, a reference to T; 'a, can't live more than the T type iself.
+
+We already made sure T lives at least as long as 'a, so we just need to make
+sure any reference of lifetime 'b can't live longer than the type it reference,
+a reference of lifetime 'a, so we restrict 'b to live, at most, as long as 'a:
+
+    struct RefWrapperWrapper<'a: 'b, 'b, T: 'a>(&'b RefWrapper<'a, T>);
