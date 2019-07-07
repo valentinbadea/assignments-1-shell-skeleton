@@ -1,0 +1,4 @@
+Not 100% sure, but I suspect the underlying storage can hold any given T, so
+when a T is pop-ed the entire content from the current tip must be correctly
+copied into the returned into the Option<T> because it is owned, aka a full,
+complete and correct copy needs to be returned.
