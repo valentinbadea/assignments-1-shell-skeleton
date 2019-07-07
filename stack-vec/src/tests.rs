@@ -80,6 +80,13 @@ fn indexing() {
 }
 
 #[test]
+#[should_panic]
+fn capacity_overflow() {
+    let mut storage = [0u8, 8];
+    let mut stack_vec = StackVec::with_len(&mut storage, 9);
+}
+
+#[test]
 fn mut_indexing() {
     let mut storage = [0u8; 1024];
     let mut stack_vec = StackVec::with_len(&mut storage, 3);

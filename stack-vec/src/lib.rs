@@ -15,7 +15,8 @@ mod tests;
 #[derive(Debug)]
 pub struct StackVec<'a, T: 'a> {
     storage: &'a mut [T],
-    len: usize
+    len: usize,
+    capacity: usize,
 }
 
 impl<'a, T: 'a> StackVec<'a, T> {
@@ -23,7 +24,12 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// store. The returned `StackVec` will be able to hold `storage.len()`
     /// values.
     pub fn new(storage: &'a mut [T]) -> StackVec<'a, T> {
-        unimplemented!()
+        let slen = storage.len();
+        StackVec {
+            storage: storage,
+            len: 0usize,
+            capacity: slen,
+        }
     }
 
     /// Constructs a new `StackVec<T>` using `storage` as the backing store. The
@@ -35,7 +41,13 @@ impl<'a, T: 'a> StackVec<'a, T> {
     ///
     /// Panics if `len > storage.len()`.
     pub fn with_len(storage: &'a mut [T], len: usize) -> StackVec<'a, T> {
-        unimplemented!()
+        let mut sv = Self::new(storage);
+        sv.len += len;
+        if sv.len >= sv.capacity {
+            panic!("Not enough storage!")
+        };
+
+        sv
     }
 
     /// Returns the number of elements this vector can hold.
