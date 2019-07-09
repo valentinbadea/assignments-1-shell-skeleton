@@ -52,7 +52,7 @@ impl<'a, T: 'a> StackVec<'a, T> {
 
     /// Returns the number of elements this vector can hold.
     pub fn capacity(&self) -> usize {
-        unimplemented!()
+        self.capacity
     }
 
     /// Shortens the vector, keeping the first `len` elements. If `len` is
@@ -83,17 +83,17 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// Returns the number of elements in the vector, also referred to as its
     /// 'length'.
     pub fn len(&self) -> usize {
-        unimplemented!()
+        self.len
     }
 
     /// Returns true if the vector contains no elements.
     pub fn is_empty(&self) -> bool {
-        unimplemented!()
+        self.len == 0
     }
 
     /// Returns true if the vector is at capacity.
     pub fn is_full(&self) -> bool {
-        unimplemented!()
+        self.len == self.capacity
     }
 
     /// Appends `value` to the back of this vector if the vector is not full.
@@ -111,7 +111,15 @@ impl<'a, T: Clone + 'a> StackVec<'a, T> {
     /// If this vector is not empty, removes the last element from this vector
     /// by cloning it and returns it. Otherwise returns `None`.
     pub fn pop(&mut self) -> Option<T> {
-        unimplemented!()
+        match self.len {
+            0 => None,
+            _ => {
+                self.len -= 1;
+                let result = self.storage[self.len].clone();
+
+                Some(result)
+            }
+        }
     }
 }
 
