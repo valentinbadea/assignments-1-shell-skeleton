@@ -125,3 +125,31 @@ impl<'a, T: Clone + 'a> StackVec<'a, T> {
 
 // FIXME: Implement `Deref`, `DerefMut`, and `IntoIterator` for `StackVec`.
 // FIXME: Implement IntoIterator` for `&StackVec`.
+
+pub struct StackVecIntoIterator<'a, T: 'a> {
+    stackvec: StackVec<'a, T>,
+    index: usize,
+}
+
+impl<'a, T: Clone + 'a> IntoIterator for StackVec<'a, &'a mut T> {
+    type Item = &'a mut T;
+    type IntoIter = StackVecIntoIterator<'a, T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        StackVecIntoIterator {
+            stackvec: self,
+            index: 0,
+        }
+    }
+}
+
+impl<'a, T: Clone + 'a> Iterator for StackVecIntoIterator<'a, T> {
+    type Item = &'a mut T;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let result = self.stackvec.pop();
+        self.index += 1;
+
+        result
+    }
+}
