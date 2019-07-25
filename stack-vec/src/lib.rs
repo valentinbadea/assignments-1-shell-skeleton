@@ -131,7 +131,7 @@ impl<'a, T: Clone + 'a> Deref for StackVec<'a, &'a mut T> {
 
     fn deref(&self) -> &Self::Target {
         let end = self.len;
-        &self.storage[0usize..end]
+        &self.storage[..end]
     }
 }
 
