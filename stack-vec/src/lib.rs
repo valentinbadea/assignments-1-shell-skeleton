@@ -1,6 +1,8 @@
 #![cfg_attr(test, feature(inclusive_range_syntax))]
 #![no_std]
 
+ use core::ops::Deref;
+
 #[cfg(test)]
 mod tests;
 
@@ -124,6 +126,15 @@ impl<'a, T: Clone + 'a> StackVec<'a, T> {
 }
 
 // FIXME: Implement `Deref`, `DerefMut`, and `IntoIterator` for `StackVec`.
+impl<'a, T: Clone + 'a> Deref for StackVec<'a, &'a mut T> {
+    type Target = [&'a mut T];
+
+    fn deref(&self) -> &Self::Target {
+        let end = self.len;
+        &self.storage[0usize..end]
+    }
+}
+
 // FIXME: Implement IntoIterator` for `&StackVec`.
 
 pub struct StackVecIntoIterator<'a, T: 'a> {
