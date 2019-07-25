@@ -1,7 +1,7 @@
 #![cfg_attr(test, feature(inclusive_range_syntax))]
 #![no_std]
 
- use core::ops::Deref;
+use core::ops::Deref;
 
 #[cfg(test)]
 mod tests;
