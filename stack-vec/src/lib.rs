@@ -2,6 +2,7 @@
 #![no_std]
 
 use core::ops::Deref;
+use core::ops::Index;
 
 #[cfg(test)]
 mod tests;
@@ -132,6 +133,14 @@ impl<'a, T: Clone + 'a> Deref for StackVec<'a, &'a mut T> {
     fn deref(&self) -> &Self::Target {
         let end = self.len;
         &self.storage[..end]
+    }
+}
+
+impl<'a, T: Clone + 'a> Index<i32> for StackVec<'a, &'a mut T> {
+    type Output = T;
+
+    fn index(&self, index: i32) -> &Self::Output {
+        &self.storage[index as usize]
     }
 }
 
