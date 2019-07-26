@@ -62,7 +62,9 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// greater than the vector's current length, this has no effect. Note that
     /// this method has no effect on the capacity of the vector.
     pub fn truncate(&mut self, len: usize) {
-        unimplemented!()
+        if len < self.len {
+            self.len = len
+        };
     }
 
     /// Extracts a slice containing the entire vector, consuming `self`.
