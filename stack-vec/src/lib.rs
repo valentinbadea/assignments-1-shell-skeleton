@@ -3,6 +3,7 @@
 
 use core::ops::Deref;
 use core::ops::Index;
+use core::ops::IndexMut;
 
 #[cfg(test)]
 mod tests;
@@ -149,6 +150,12 @@ impl<'a, T: Clone + 'a> Index<usize> for StackVec<'a, T> {
 
     fn index(&self, index: usize) -> &Self::Output {
         &self.storage[index]
+    }
+}
+
+impl<'a, T: Clone + 'a> IndexMut<usize> for StackVec<'a, T> {
+    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
+        &mut self.storage[index]
     }
 }
 
