@@ -108,7 +108,13 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// If this vector is full, an `Err` is returned. Otherwise, `Ok` is
     /// returned.
     pub fn push(&mut self, value: T) -> Result<(), ()> {
-        unimplemented!()
+        if self.len == self.capacity {
+            Err(())
+        } else {
+            self.storage[self.len] = value;
+            self.len += 1;
+            Ok(())
+        }
     }
 }
 
