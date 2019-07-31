@@ -2,6 +2,7 @@
 #![no_std]
 
 use core::ops::Deref;
+use core::ops::DerefMut;
 use core::ops::Index;
 use core::ops::IndexMut;
 
@@ -142,6 +143,13 @@ impl<'a, T: Clone + 'a> Deref for StackVec<'a, T> {
     fn deref(&self) -> &Self::Target {
         let end = self.len;
         &self.storage[..end]
+    }
+}
+
+impl<'a, T: Clone + 'a> DerefMut for StackVec<'a, T> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        let end = self.len;
+        &mut self.storage[..end]
     }
 }
 
