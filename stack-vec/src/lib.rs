@@ -73,17 +73,17 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// Note that the returned slice's length will be the length of this vector,
     /// _not_ the length of the original backing storage.
     pub fn into_slice(self) -> &'a mut [T] {
-        unimplemented!()
+        &mut self.storage[..self.len]
     }
 
     /// Extracts a slice containing the entire vector.
     pub fn as_slice(&self) -> &[T] {
-        unimplemented!()
+        &self.storage[..self.len]
     }
 
     /// Extracts a mutable slice of the entire vector.
     pub fn as_mut_slice(&mut self) -> &mut [T] {
-        unimplemented!()
+        &mut self.storage[..self.len]
     }
 
     /// Returns the number of elements in the vector, also referred to as its
@@ -149,6 +149,9 @@ impl<'a, T: Clone + 'a> Index<usize> for StackVec<'a, T> {
     type Output = T;
 
     fn index(&self, index: usize) -> &Self::Output {
+        if self.len <= index {
+            panic!("Index out of bounds");
+        }
         &self.storage[index]
     }
 }
