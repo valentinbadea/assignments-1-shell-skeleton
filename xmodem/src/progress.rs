@@ -18,4 +18,13 @@ pub enum Progress {
 pub type ProgressFn = fn(Progress);
 
 /// Noop progress callback.
-pub fn noop(_: Progress) {  }
+pub fn noop(_: Progress) {}
+
+pub fn transfer_status(state: Progress) {
+    
+    match state {
+        Progress::Waiting => println!("Waiting"),
+        Progress::Started => println!("Started"),
+        Progress::Packet(x) => println!("Packet {}", x),
+    }
+}
