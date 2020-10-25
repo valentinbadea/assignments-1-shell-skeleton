@@ -5,6 +5,35 @@ struct Builder {
     number: Option<usize>,
 }
 
+use std::fmt::Display;
+impl Builder {
+    fn to_string(&self)->String{
+        match (&self.string, &self.number){
+            (Some(x),Some(y))=>format!("{} {}",x,y),
+            (None,Some(x))=>format!("{}",x),
+            (Some(x),None)=>format!("{}",x),
+            (None,None)=>format!(""),
+        }
+    }
+
+    fn string<S: Display>(&mut self, string:S)->&mut Self{
+        self.string = Some(string.to_string());
+        self
+    }
+
+    fn number(&mut self, number:usize)->&mut Self{
+        self.number = Some(number);
+        self
+    }
+
+    fn default() -> Self { 
+        Builder {
+            number: None,
+            string: None
+        }
+    }
+}
+
 // Do not modify this function.
 fn main() {
     let empty = Builder::default().to_string();
