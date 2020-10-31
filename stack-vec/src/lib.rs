@@ -4,8 +4,7 @@
 mod tests;
 use core::ops::Deref;
 use core::ops::DerefMut;
-use core::ops::Index;
-use core::ops::IndexMut;
+use core::slice::Iter;
 /// A contiguous array type backed by a slice.
 ///
 /// `StackVec`'s functionality is similar to that of `std::Vec`. You can `push`
@@ -17,7 +16,6 @@ use core::ops::IndexMut;
 pub struct StackVec<'a, T: 'a> {
     storage: &'a mut [T],
     len: usize,
-    capacity: usize,
 }
 
 impl<'a, T: 'a> StackVec<'a, T> {
@@ -25,11 +23,9 @@ impl<'a, T: 'a> StackVec<'a, T> {
     /// store. The returned `StackVec` will be able to hold `storage.len()`
     /// values.
     pub fn new(storage: &'a mut [T]) -> StackVec<'a, T> {
-        let x = storage.len();
         StackVec {
             storage: storage,
             len: 0usize,
-            capacity: x,
         }
     }
 
@@ -44,15 +40,15 @@ impl<'a, T: 'a> StackVec<'a, T> {
     pub fn with_len(storage: &'a mut [T], len: usize) -> StackVec<'a, T> {
         let mut new_stack = Self::new(storage);
         new_stack.len += len;
-        if new_stack.len > new_stack.capacity {
-            panic! {"Len too big {} not fitting in capacity {} ",len, new_stack.capacity}
+        if new_stack.len > new_stack.storage.len(){
+            panic! {"Len too big {} not fitting in capacity {} ",len, new_stack.storage.len()}
         }
         new_stack
     }
 
     /// Returns the number of elements this vector can hold.
     pub fn capacity(&self) -> usize {
-        self.capacity
+        self.storage.len()
     }
 
     /// Shortens the vector, keeping the first `len` elements. If `len` is
@@ -95,7 +91,7 @@ impl<'a, T: 'a> StackVec<'a, T> {
 
     /// Returns true if the vector is at capacity.
     pub fn is_full(&self) -> bool {
-        self.capacity == self.len
+        self.storage.len() == self.len
     }
 
     /// Appends `value` to the back of this vector if the vector is not full.
@@ -131,55 +127,31 @@ impl<'a, T: Clone + 'a> Deref for StackVec<'a, T> {
     type Target = [T];
 
     fn deref(&self) -> &Self::Target {
-        &self.storage[..self.len]
+        self.as_slice()
     }
 }
 
 impl<'a, T: Clone + 'a> DerefMut for StackVec<'a, T> {
     fn deref_mut(&mut self) -> &mut [T] {
-        &mut self.storage[..self.len]
+        self.as_mut_slice()
     }
 }
 
-impl<'a, T: Clone + 'a> Index<usize> for StackVec<'a, T> {
-    type Output = T;
-
-    fn index(&self, index: usize) -> &Self::Output {
-        if self.len <= index {
-            panic!("Index out of bounds");
-        }
-        &self.storage[index]
-    }
-}
-impl<'a, T: Clone + 'a> IndexMut<usize> for StackVec<'a, T> {
-    fn index_mut(&mut self, index: usize) -> &mut Self::Output {
-        &mut self.storage[index]
-    }
-}
-
-pub struct StackVecIntoIterator<'a, T: 'a> {
-    stackvec: StackVec<'a, T>,
-    index: usize,
-}
-
-impl<'a, T: Clone + 'a> IntoIterator for StackVec<'a, T> {
-    type Item = T;
-    type IntoIter = StackVecIntoIterator<'a, T>;
+impl<'a, T: 'a> IntoIterator for StackVec<'a, T> {
+    type Item = &'a T;
+    type IntoIter = Iter<'a, T>;
 
     fn into_iter(self) -> Self::IntoIter {
-        StackVecIntoIterator {
-            stackvec: self,
-            index: 0,
-        }
+        self.storage[..self.len].into_iter()
     }
 }
 
-impl<'a, T: Clone + 'a> Iterator for StackVecIntoIterator<'a, T> {
-    type Item = T;
+impl<'a, T: 'a> IntoIterator for &'a StackVec<'a, T> {
+    type Item = &'a T;
+    type IntoIter = Iter<'a, T>;
 
-    fn next(&mut self) -> Option<Self::Item> {
-        self.index += 1;
-        self.stackvec.pop().clone()
+    fn into_iter(self) -> Self::IntoIter {
+        self.storage[..self.len].into_iter()
     }
 }
 // FIXME: Implement `Deref`, `DerefMut`, and `IntoIterator` for `StackVec`.
