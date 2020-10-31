@@ -123,7 +123,7 @@ impl<'a, T: Clone + 'a> StackVec<'a, T> {
         }
     }
 }
-impl<'a, T: Clone + 'a> Deref for StackVec<'a, T> {
+impl<'a, T: 'a> Deref for StackVec<'a, T> {
     type Target = [T];
 
     fn deref(&self) -> &Self::Target {
@@ -131,7 +131,7 @@ impl<'a, T: Clone + 'a> Deref for StackVec<'a, T> {
     }
 }
 
-impl<'a, T: Clone + 'a> DerefMut for StackVec<'a, T> {
+impl<'a, T: 'a> DerefMut for StackVec<'a, T> {
     fn deref_mut(&mut self) -> &mut [T] {
         self.as_mut_slice()
     }
