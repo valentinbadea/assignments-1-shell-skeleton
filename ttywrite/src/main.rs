@@ -53,6 +53,32 @@ fn main() {
 
     let opt = Opt::from_args();
     let mut serial = serial::open(&opt.tty_path).expect("path points to invalid TTY");
+    if opt.input.is_some() {
+        let f = File::open(opt.input.unwrap());
+        let mut reader = BufReader::new(f.unwrap());
+        if opt.raw {
+            let len = io::copy(&mut reader, &mut serial).unwrap();
+            println!("wrote {:?} bytes to {:?}", len, opt.tty_path);
+        } else {
+            match Xmodem::transmit(reader, serial) {
+                Ok(_) => println!("wrote bytes with Xmodem to {:?}", opt.tty_path),
+                Err(error) => panic!("Problem opening the file: {:?}", error),
+            }
+        }
+    } else {
+        let stdin = io::stdin();
+        let stdin = stdin.lock();
+        let mut buffer = BufReader::new(stdin);
 
-    // FIXME: Implement the `ttywrite` utility.
+        if opt.raw {
+            let len = io::copy(&mut buffer, &mut serial).unwrap();
+            println!("wrote {:?} bytes to {:?}", len, opt.tty_path);
+        } else {
+            match Xmodem::transmit(buffer, serial) {
+                Ok(_) => println!("wrote bytes with Xmodem to {:?}", opt.tty_path),
+                Err(error) => panic!("Problem opening the file: {:?}", error),
+            }
+        }
+    }
+
 }
